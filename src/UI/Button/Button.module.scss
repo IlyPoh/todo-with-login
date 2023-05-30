@@ -1,0 +1,22 @@
+@import '../../styles/base/config';
+
+.btn {
+  padding: 10px 30px;
+
+  border: none;
+  border-radius: 5px;
+
+  transition: color $defaultTransition, background $defaultTransition,
+    border $defaultTransition;
+
+  &-green {
+    font-size: $fs-normal;
+    font-weight: 600;
+    line-height: 21px;
+    color: $color-white;
+
+    background-color: $color-green;
+
+    cursor: pointer;
+  }
+}
