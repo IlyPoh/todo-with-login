@@ -1,6 +1,10 @@
 @import '../../styles/base/config';
 
 .btn {
+  font-size: $fs-normal;
+  font-weight: 600;
+  line-height: 21px;
+
   padding: 10px 30px;
 
   border: none;
@@ -10,9 +14,6 @@
     border $defaultTransition;
 
   &-green {
-    font-size: $fs-normal;
-    font-weight: 600;
-    line-height: 21px;
     color: $color-white;
 
     background-color: $color-green;
