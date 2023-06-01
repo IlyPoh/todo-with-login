@@ -19,5 +19,15 @@
     background-color: $color-green;
 
     cursor: pointer;
+
+    &:hover {
+      background-color: $color-green-dark;
+    }
   }
+}
+
+.submitting {
+  cursor: wait;
+  pointer-events: none;
+  opacity: 0.5;
 }

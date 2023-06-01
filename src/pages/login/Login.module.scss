@@ -14,6 +14,7 @@
   border-radius: 5px;
 
   background-color: $color-grey-c4;
+  box-shadow: 0 0 10px 2px $color-shadow;
 }
 
 .title {
@@ -43,21 +44,45 @@
   margin-bottom: 15px;
 }
 
-input {
+.input-block {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  margin-bottom: 15px;
+
+  input {
+    font-size: $fs-normal;
+    line-height: 21px;
+
+    padding: 10px;
+
+    border-radius: 5px;
+    border: 3px solid transparent;
+    outline: none;
+
+    &::placeholder {
+      color: $color-grey-54;
+      opacity: 0.5;
+    }
+  }
+
+  .success {
+    border: 3px solid $color-green;
+  }
+
+  .error {
+    border: 3px solid $color-red;
+  }
+}
+
+.error-message {
+  color: $color-red;
   font-size: $fs-normal;
+  font-weight: 700;
   line-height: 21px;
 
-  padding: 10px;
-  margin-bottom: 20px;
-
-  border-radius: 5px;
-  border: none;
-  outline: none;
-
-  &::placeholder {
-    color: $color-grey-54;
-    opacity: 0.5;
-  }
+  margin-left: 3px;
 }
 
 button {

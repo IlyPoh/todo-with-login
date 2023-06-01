@@ -1,10 +1,15 @@
+// modules
+import { Routes, Route } from 'react-router-dom';
+
+// components
+import { Layout } from './components/Layout/Layout';
+
 // pages
+import { Login } from './pages/login/Login';
+import { Todo } from './pages/todo/Todo';
 
 // style
-import { Routes, Route } from 'react-router-dom';
 import './styles/app.scss';
-import { Layout } from './components/Layout/Layout';
-import { Login } from './pages/login/Login';
 
 function App(): JSX.Element {
   return (
@@ -12,6 +17,7 @@ function App(): JSX.Element {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Login />} />
+          <Route path="todo/:userId" element={<Todo />} />
         </Route>
       </Routes>
     </>
