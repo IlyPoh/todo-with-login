@@ -2,8 +2,8 @@
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
-// UI
-import { Button } from '../../UI/Button/Button';
+// components
+import { Button } from '../../components/UI/Button/Button';
 
 // utils
 import { loginSchema } from '../../utils/loginSchema';
@@ -56,7 +56,7 @@ export const Login: React.FC = () => {
           console.log('user does not exist');
         }
 
-        // actions.resetForm();
+        actions.resetForm();
       } catch (error) {
         console.log(error);
       }
@@ -79,7 +79,7 @@ export const Login: React.FC = () => {
       <div className={styles['block']}>
         <form
           onSubmit={handleSubmit}
-          className={styles['form']}
+          className={styles['login-form']}
           action="submit"
         >
           <div className={styles['title']}>

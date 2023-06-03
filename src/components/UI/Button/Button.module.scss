@@ -1,4 +1,4 @@
-@import '../../styles/base/config';
+@import '../../../styles/base/config';
 
 .btn {
   font-size: $fs-normal;
@@ -11,7 +11,7 @@
   border-radius: 5px;
 
   transition: color $defaultTransition, background $defaultTransition,
-    border $defaultTransition;
+    border $defaultTransition, opacity $defaultTransition;
 
   &-green {
     color: $color-white;
@@ -22,6 +22,23 @@
 
     &:hover {
       background-color: $color-green-dark;
+    }
+  }
+
+  &-star {
+    font-size: $fs-normal;
+
+    padding: 0;
+
+    background: none;
+    border: none;
+
+    opacity: 0.3;
+
+    &:hover,
+    &-active {
+      opacity: 1;
+      color: $color-yellow;
     }
   }
 }

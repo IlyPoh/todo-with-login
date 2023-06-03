@@ -6,7 +6,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 
   &-block {
     max-width: 500px;
@@ -33,8 +32,23 @@
     padding: 15px;
   }
 
+  &-add {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 15px;
+    gap: 10px;
+
+    border-bottom: 1px solid $color-grey-a5;
+  }
+
   &-list {
     &-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+
       padding: 10px 15px;
 
       border-bottom: 1px solid $color-grey-a5;
@@ -42,6 +56,53 @@
       &:last-child {
         border-bottom: none;
       }
+    }
+  }
+
+  &-filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    gap: 10px;
+    padding: 15px;
+
+    border-bottom: 1px solid $color-grey-a5;
+  }
+
+  &-filter {
+    width: calc(50% - 5px);
+
+    select {
+      width: 100%;
+
+      font-size: $fs-small;
+      line-height: $fs-normal;
+
+      padding: 5px;
+
+      border-radius: 5px;
+      border: none;
+      outline: none;
+    }
+  }
+
+  input {
+    width: 100%;
+
+    font-size: $fs-normal;
+    line-height: 21px;
+
+    padding: 5px;
+
+    border-radius: 5px;
+    border: none;
+    outline: none;
+
+    &::placeholder {
+      color: $color-grey-54;
+      opacity: 0.5;
     }
   }
 }

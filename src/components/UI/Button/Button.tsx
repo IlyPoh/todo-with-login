@@ -2,16 +2,16 @@
 import classNames from 'classnames';
 
 // types
-import { ButtonProps } from '../../types';
-
+import { ButtonProps } from '../../../types';
 // style
 import styles from './Button.module.scss';
 
 export const Button: React.FC<ButtonProps> = ({
-  text = 'Button',
+  text,
   classes = '',
+  children,
   ...props
-}) => {
+}: ButtonProps) => {
   const classList = classes.split(' ');
 
   const buttonClasses = classNames(
@@ -22,7 +22,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <button className={buttonClasses} {...props}>
-      {text}
+      {text ?? children}
     </button>
   );
 };

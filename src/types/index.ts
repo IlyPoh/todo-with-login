@@ -34,3 +34,13 @@ export interface IUser {
     bs: string;
   };
 }
+
+export interface IFilters {
+  complitionFilter: string;
+  userFilter: string;
+}
+
+export interface IInputs {
+  addValue: string;
+  searchValue: string;
+}

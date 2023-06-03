@@ -7,7 +7,7 @@
   justify-content: center;
 }
 
-.form {
+.login-form {
   max-width: 450px;
   width: 100%;
 
@@ -15,76 +15,75 @@
 
   background-color: $color-grey-c4;
   box-shadow: 0 0 10px 2px $color-shadow;
-}
-
-.title {
-  text-align: center;
-  font-size: $fs-normal;
-  line-height: 21px;
-  color: $color-grey-5f;
-
-  background-color: $color-grey-a5;
-
-  border-radius: 5px 5px 0 0;
-
-  padding: 15px;
-}
-
-.body {
-  display: flex;
-  flex-direction: column;
-
-  padding: 15px 25px;
-}
-
-.information {
-  color: $color-grey-5f;
-  line-height: 21px;
-
-  margin-bottom: 15px;
-}
-
-.input-block {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-
-  margin-bottom: 15px;
-
-  input {
+  .title {
+    text-align: center;
     font-size: $fs-normal;
     line-height: 21px;
+    color: $color-grey-5f;
 
-    padding: 10px;
+    background-color: $color-grey-a5;
 
-    border-radius: 5px;
-    border: 3px solid transparent;
-    outline: none;
+    border-radius: 5px 5px 0 0;
 
-    &::placeholder {
-      color: $color-grey-54;
-      opacity: 0.5;
+    padding: 15px;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+
+    padding: 15px 25px;
+  }
+
+  .information {
+    color: $color-grey-5f;
+    line-height: 21px;
+
+    margin-bottom: 15px;
+  }
+
+  .input-block {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    margin-bottom: 15px;
+
+    input {
+      font-size: $fs-normal;
+      line-height: 21px;
+
+      padding: 10px;
+
+      border-radius: 5px;
+      border: 3px solid transparent;
+      outline: none;
+
+      &::placeholder {
+        color: $color-grey-54;
+        opacity: 0.5;
+      }
+    }
+
+    .success {
+      border: 3px solid $color-green;
+    }
+
+    .error {
+      border: 3px solid $color-red;
     }
   }
 
-  .success {
-    border: 3px solid $color-green;
+  .error-message {
+    color: $color-red;
+    font-size: $fs-normal;
+    font-weight: 700;
+    line-height: 21px;
+
+    margin-left: 3px;
   }
 
-  .error {
-    border: 3px solid $color-red;
+  button {
+    margin-bottom: 15px;
   }
-}
-
-.error-message {
-  color: $color-red;
-  font-size: $fs-normal;
-  font-weight: 700;
-  line-height: 21px;
-
-  margin-left: 3px;
-}
-
-button {
-  margin-bottom: 15px;
 }
