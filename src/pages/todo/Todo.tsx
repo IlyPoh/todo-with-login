@@ -1,5 +1,5 @@
 // modules
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 // components
@@ -9,6 +9,13 @@ import { Select } from '../../components/UI/Select/Select';
 
 // utils
 import { todoApi, userApi } from '../../utils/api';
+import {
+  handleAddChange,
+  handleAddTodo,
+  handleComplitionFilterChange,
+  handleFavourite,
+  handleUserFilterChange,
+} from '../../utils/handlers';
 import {
   complitionFilterOptions,
   userFilterOptions,
@@ -37,43 +44,15 @@ export const Todo: React.FC = () => {
     localStorage.favoriteTodos
   );
 
-  const fetchAllTodos = async () => {
-    const todos = await fetch(todoApi)
-      .then((response) => response.json())
-      .catch((error) => console.log(error));
-    setTodos(todos);
-  };
-
-  const handleAddChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputsValue({ ...inputsValue, addValue: event.target.value });
-  };
-
-  const handleAddTodo = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!inputsValue.addValue.trim()) return;
-
-    const newTodo: ITodo = {
-      userId: Number(userId),
-      id: new Date().getTime(),
-      title: inputsValue.addValue,
-      completed: false,
-    };
-
-    setTodos([newTodo, ...todos]);
-    setInputsValue({ ...inputsValue, addValue: '' });
-  };
-
-  const handleComplitionFilterChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setFilters({ ...filters, complitionFilter: event.target.value });
-  };
-
-  const handleUserFilterChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setFilters({ ...filters, userFilter: event.target.value });
-  };
+  const fetchAllTodos = useCallback(async () => {
+    try {
+      const response = await fetch(todoApi);
+      const todos = await response.json();
+      setTodos(todos);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   const checkFavorite = (id: number): ITodo[] => {
     return favoriteTodos.includes(id);
@@ -104,8 +83,10 @@ export const Todo: React.FC = () => {
     }
 
     if (inputsValue.searchValue) {
+      const searchValueLower = inputsValue.searchValue.toLowerCase();
+
       filtered = filtered.filter((todo) =>
-        todo.title.toLowerCase().includes(inputsValue.searchValue.toLowerCase())
+        todo.title.toLowerCase().includes(searchValueLower)
       );
     }
 
@@ -113,98 +94,106 @@ export const Todo: React.FC = () => {
   }, [todos, filters, inputsValue, favoriteTodos]);
 
   const checkLocalStorageFavoriteState = () => {
-    localStorage.favoriteTodos
-      ? localStorage.favoriteTodos
-      : (localStorage.favoriteTodos = JSON.stringify([]));
-
-    setFavoriteTodos(JSON.parse(localStorage.favoriteTodos));
-  };
-
-  const handleFavourite = (id: number): void => {
-    if (checkFavorite(id)) {
-      const newFavoriteTodos = favoriteTodos.filter(
-        (todoId: number) => todoId !== id
-      );
-
-      localStorage.favoriteTodos = JSON.stringify(newFavoriteTodos);
-      setFavoriteTodos(newFavoriteTodos);
-      return;
+    const storedFavoriteTodos = localStorage.getItem('favoriteTodos');
+    if (!storedFavoriteTodos) {
+      localStorage.setItem('favoriteTodos', JSON.stringify([]));
+    } else {
+      setFavoriteTodos(JSON.parse(storedFavoriteTodos));
     }
-
-    const newFavoriteTodos = [...favoriteTodos, id];
-
-    localStorage.favoriteTodos = JSON.stringify(newFavoriteTodos);
-    setFavoriteTodos(newFavoriteTodos);
   };
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userInfo = await fetch(`${userApi}/${userId}`)
-        .then((response) => response.json())
-        .catch((error) => console.log(error));
-      setUser(userInfo);
+      try {
+        const response = await fetch(`${userApi}/${userId}`);
+        const userInfo = await response.json();
+        setUser(userInfo);
+      } catch (error) {
+        console.log(error);
+      }
     };
+
     fetchUser();
     fetchAllTodos();
     checkLocalStorageFavoriteState();
-  }, [userId]);
+  }, [userId, fetchAllTodos]);
 
   useEffect(() => {
     filterTodo();
   }, [filterTodo]);
 
   return (
-    <>
-      <div className={styles['todo']}>
-        <div className={styles['todo-block']}>
-          <div className={styles['todo-title']}>
-            {user?.name ?? 'No username'}
-          </div>
-
-          <form onSubmit={handleAddTodo} className={styles['todo-add']}>
-            <input
-              onChange={handleAddChange}
-              value={inputsValue.addValue}
-              type="text"
-            />
-            <Button type="submit" classes="btn btn-green" text="Add" />
-          </form>
-
-          <div className={styles['todo-filters']}>
-            <input
-              type="text"
-              value={inputsValue.searchValue}
-              onChange={(e) =>
-                setInputsValue({ ...inputsValue, searchValue: e.target.value })
-              }
-            />
-            <div className={styles['todo-filter']}>
-              <Select
-                options={complitionFilterOptions}
-                onChange={handleComplitionFilterChange}
-                value={filters.complitionFilter}
-                name="complition"
-                id="complition"
-              />
-            </div>
-            <div className={styles['todo-filter']}>
-              <Select
-                options={userFilterOptions(userId)}
-                onChange={handleUserFilterChange}
-                value={filters.userFilter}
-                name="user"
-                id="user"
-              />
-            </div>
-          </div>
-
-          <TodoList
-            filteredTodos={filteredTodos}
-            checkFavorite={checkFavorite}
-            handleFavourite={handleFavourite}
-          />
+    <div className={styles['todo']}>
+      <div className={styles['todo-block']}>
+        <div className={styles['todo-title']}>
+          {user?.name ?? 'No username'}
         </div>
+
+        <form
+          onSubmit={(event) =>
+            handleAddTodo(
+              event,
+              inputsValue,
+              setInputsValue,
+              todos,
+              setTodos,
+              userId
+            )
+          }
+          className={styles['todo-add']}
+        >
+          <input
+            onChange={(event) =>
+              handleAddChange(event, inputsValue, setInputsValue)
+            }
+            value={inputsValue.addValue}
+            type="text"
+          />
+          <Button type="submit" classes="btn btn-green" text="Add" />
+        </form>
+
+        <div className={styles['todo-filters']}>
+          <input
+            type="text"
+            value={inputsValue.searchValue}
+            onChange={(e) =>
+              setInputsValue({ ...inputsValue, searchValue: e.target.value })
+            }
+          />
+
+          <div className={styles['todo-filter']}>
+            <Select
+              options={complitionFilterOptions}
+              onChange={(event) =>
+                handleComplitionFilterChange(event, filters, setFilters)
+              }
+              value={filters.complitionFilter}
+              name="complition"
+              id="complition"
+            />
+          </div>
+
+          <div className={styles['todo-filter']}>
+            <Select
+              options={userFilterOptions(userId)}
+              onChange={(event) =>
+                handleUserFilterChange(event, filters, setFilters)
+              }
+              value={filters.userFilter}
+              name="user"
+              id="user"
+            />
+          </div>
+        </div>
+
+        <TodoList
+          filteredTodos={filteredTodos}
+          checkFavorite={checkFavorite}
+          handleFavourite={(id) =>
+            handleFavourite(id, favoriteTodos, setFavoriteTodos)
+          }
+        />
       </div>
-    </>
+    </div>
   );
 };
