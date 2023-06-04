@@ -1,0 +1,92 @@
+@import '../../styles/base/config';
+
+.todo {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 15px 10px;
+
+  &-block {
+    max-width: 500px;
+    width: 100%;
+
+    border-radius: 5px;
+    box-shadow: 0 0 10px 2px $color-shadow;
+
+    background-color: $color-grey-c4;
+  }
+
+  &-title {
+    text-align: center;
+    font-size: $fs-normal;
+    line-height: 21px;
+    color: $color-grey-5f;
+
+    background-color: $color-grey-a5;
+
+    border-radius: 5px 5px 0 0;
+
+    padding: 15px;
+  }
+
+  &-add {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 15px;
+    gap: 10px;
+
+    border-bottom: 1px solid $color-grey-a5;
+  }
+
+  &-filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    gap: 10px;
+    padding: 15px;
+
+    border-bottom: 1px solid $color-grey-a5;
+  }
+
+  &-filter {
+    width: calc(50% - 5px);
+
+    select {
+      width: 100%;
+
+      font-size: $fs-small;
+      line-height: $fs-normal;
+
+      padding: 5px;
+
+      border-radius: 5px;
+      border: none;
+      outline: none;
+    }
+  }
+
+  input {
+    width: 100%;
+
+    font-size: $fs-normal;
+    line-height: 21px;
+
+    padding: 5px;
+
+    border-radius: 5px;
+    border: none;
+    outline: none;
+
+    &::placeholder {
+      color: $color-grey-54;
+
+      opacity: 0.5;
+    }
+  }
+}

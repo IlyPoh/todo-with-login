@@ -1,0 +1,18 @@
+@import '../../../styles/base/config';
+
+.list {
+  &-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: 10px 15px;
+
+    border-bottom: 1px solid $color-grey-a5;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}

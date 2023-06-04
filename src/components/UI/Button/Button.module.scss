@@ -1,0 +1,52 @@
+@import '../../../styles/base/config';
+
+.btn {
+  font-size: $fs-normal;
+  font-weight: 600;
+  line-height: 21px;
+
+  padding: 10px 30px;
+
+  border: none;
+  border-radius: 5px;
+
+  transition: color $defaultTransition, background $defaultTransition,
+    border $defaultTransition, opacity $defaultTransition;
+
+  &-green {
+    color: $color-white;
+
+    background-color: $color-green;
+
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-green-dark;
+    }
+  }
+
+  &-star {
+    font-size: $fs-normal;
+
+    padding: 0;
+
+    background: none;
+    border: none;
+
+    opacity: 0.3;
+
+    &:hover,
+    &-active {
+      opacity: 1;
+
+      color: $color-yellow;
+    }
+  }
+}
+
+.submitting {
+  cursor: wait;
+  pointer-events: none;
+
+  opacity: 0.5;
+}
