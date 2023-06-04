@@ -44,3 +44,8 @@ export interface IInputs {
   addValue: string;
   searchValue: string;
 }
+
+export interface IFilterOptions {
+  text: string;
+  value: string;
+}

@@ -3,7 +3,16 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 // components
+import { TodoList } from './TodoList/TodoList';
 import { Button } from '../../components/UI/Button/Button';
+import { Select } from '../../components/UI/Select/Select';
+
+// utils
+import { todoApi, userApi } from '../../utils/api';
+import {
+  complitionFilterOptions,
+  userFilterOptions,
+} from '../../utils/selectorOptions';
 
 // types
 import { IUser, ITodo, IFilters, IInputs } from '../../types';
@@ -29,7 +38,7 @@ export const Todo: React.FC = () => {
   );
 
   const fetchAllTodos = async () => {
-    const todos = await fetch(`https://jsonplaceholder.typicode.com/todos`)
+    const todos = await fetch(todoApi)
       .then((response) => response.json())
       .catch((error) => console.log(error));
     setTodos(todos);
@@ -43,7 +52,7 @@ export const Todo: React.FC = () => {
     event.preventDefault();
     if (!inputsValue.addValue.trim()) return;
 
-    const newTodo = {
+    const newTodo: ITodo = {
       userId: Number(userId),
       id: new Date().getTime(),
       title: inputsValue.addValue,
@@ -66,15 +75,26 @@ export const Todo: React.FC = () => {
     setFilters({ ...filters, userFilter: event.target.value });
   };
 
+  const checkFavorite = (id: number): ITodo[] => {
+    return favoriteTodos.includes(id);
+  };
+
   const filterTodo = useCallback(() => {
     let filtered = todos;
 
-    if (filters.complitionFilter !== 'allComplitions') {
+    if (
+      filters.complitionFilter !== 'allComplitions' &&
+      filters.complitionFilter !== 'favourites'
+    ) {
       filtered = filtered.filter((todo) =>
         filters.complitionFilter === 'completed'
           ? todo.completed
           : !todo.completed
       );
+    }
+
+    if (filters.complitionFilter === 'favourites') {
+      filtered = filtered.filter((todo) => favoriteTodos.includes(todo.id));
     }
 
     if (filters.userFilter !== 'allUsers') {
@@ -90,7 +110,7 @@ export const Todo: React.FC = () => {
     }
 
     setFilteredTodos(filtered);
-  }, [todos, filters, inputsValue]);
+  }, [todos, filters, inputsValue, favoriteTodos]);
 
   const checkLocalStorageFavoriteState = () => {
     localStorage.favoriteTodos
@@ -100,7 +120,7 @@ export const Todo: React.FC = () => {
     setFavoriteTodos(JSON.parse(localStorage.favoriteTodos));
   };
 
-  const handleFavourite = (id: number) => {
+  const handleFavourite = (id: number): void => {
     if (checkFavorite(id)) {
       const newFavoriteTodos = favoriteTodos.filter(
         (todoId: number) => todoId !== id
@@ -117,15 +137,9 @@ export const Todo: React.FC = () => {
     setFavoriteTodos(newFavoriteTodos);
   };
 
-  const checkFavorite = (id: number) => {
-    return favoriteTodos.includes(id);
-  };
-
   useEffect(() => {
     const fetchUser = async () => {
-      const userInfo = await fetch(
-        `https://jsonplaceholder.typicode.com/users/${userId}`
-      )
+      const userInfo = await fetch(`${userApi}/${userId}`)
         .then((response) => response.json())
         .catch((error) => console.log(error));
       setUser(userInfo);
@@ -165,52 +179,30 @@ export const Todo: React.FC = () => {
               }
             />
             <div className={styles['todo-filter']}>
-              <select
+              <Select
+                options={complitionFilterOptions}
                 onChange={handleComplitionFilterChange}
                 value={filters.complitionFilter}
                 name="complition"
                 id="complition"
-              >
-                <option value="allComplitions">All</option>
-                <option value="completed">Completed</option>
-                <option value="uncompleted">Uncompleted</option>
-                <option value="favourites">Favorites</option>
-              </select>
+              />
             </div>
             <div className={styles['todo-filter']}>
-              <select
+              <Select
+                options={userFilterOptions(userId)}
                 onChange={handleUserFilterChange}
                 value={filters.userFilter}
                 name="user"
                 id="user"
-              >
-                <option value="allUsers">All</option>
-                <option value={userId}>{userId}</option>
-              </select>
+              />
             </div>
           </div>
 
-          <ul className={styles['todo-list']}>
-            {filteredTodos.length ? (
-              filteredTodos.map((todo: ITodo) => (
-                <li className={styles['todo-list-item']} key={todo.id}>
-                  {todo.title}
-                  <Button
-                    classes={
-                      checkFavorite(todo.id)
-                        ? 'btn btn-star btn-star-active'
-                        : 'btn btn-star'
-                    }
-                    onClick={() => handleFavourite(todo.id)}
-                  >
-                    <span className="icon-star" />
-                  </Button>
-                </li>
-              ))
-            ) : (
-              <li className={styles['todo-list-item']}>No Todos</li>
-            )}
-          </ul>
+          <TodoList
+            filteredTodos={filteredTodos}
+            checkFavorite={checkFavorite}
+            handleFavourite={handleFavourite}
+          />
         </div>
       </div>
     </>

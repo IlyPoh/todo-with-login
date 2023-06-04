@@ -35,8 +35,6 @@ export const Login: React.FC = () => {
         );
         const data = await response.json();
 
-        console.log(data);
-
         const userExists = data.find(
           (user: { username: string; phone: string }) => {
             const pattern = /[^0-9]/g;
@@ -50,7 +48,6 @@ export const Login: React.FC = () => {
         );
 
         if (userExists) {
-          console.log('user exists');
           navigate(`/todo/${userExists.id}`);
         } else {
           console.log('user does not exist');
