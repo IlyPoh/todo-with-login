@@ -1,6 +1,10 @@
+// components
 import { Button } from '../../../components/UI/Button/Button';
+
+// types
 import { ITodo } from '../../../types';
 
+// styles
 import styles from './TodoList.module.scss';
 
 interface TodoListProps {

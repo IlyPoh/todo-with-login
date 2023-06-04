@@ -38,6 +38,7 @@
     &:hover,
     &-active {
       opacity: 1;
+
       color: $color-yellow;
     }
   }
@@ -46,5 +47,6 @@
 .submitting {
   cursor: wait;
   pointer-events: none;
+
   opacity: 0.5;
 }

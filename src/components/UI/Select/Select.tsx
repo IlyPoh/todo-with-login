@@ -1,3 +1,4 @@
+// types
 import { IFilterOptions } from '../../../types';
 
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {

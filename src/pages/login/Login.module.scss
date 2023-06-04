@@ -2,9 +2,12 @@
 
 .block {
   height: 100%;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  padding: 15px 10px;
 }
 
 .login-form {
@@ -14,7 +17,9 @@
   border-radius: 5px;
 
   background-color: $color-grey-c4;
+
   box-shadow: 0 0 10px 2px $color-shadow;
+
   .title {
     text-align: center;
     font-size: $fs-normal;
