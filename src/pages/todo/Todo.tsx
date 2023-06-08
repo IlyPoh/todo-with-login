@@ -1,5 +1,5 @@
 // modules
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 // components
@@ -39,9 +39,8 @@ export const Todo: React.FC = () => {
     userFilter: 'allUsers',
   });
   const [todos, setTodos] = useState<ITodo[]>([]);
-  const [filteredTodos, setFilteredTodos] = useState<ITodo[]>([]);
-  const [favoriteTodos, setFavoriteTodos] = useState(
-    localStorage.favoriteTodos
+  const [favoriteTodos, setFavoriteTodos] = useState<number[]>(
+    useMemo(() => localStorage.favoriteTodos, [])
   );
 
   const fetchAllTodos = useCallback(async () => {
@@ -54,11 +53,11 @@ export const Todo: React.FC = () => {
     }
   }, []);
 
-  const checkFavorite = (id: number): ITodo[] => {
+  const checkFavorite = (id: number): boolean => {
     return favoriteTodos.includes(id);
   };
 
-  const filterTodo = useCallback(() => {
+  const filteredTodos = useMemo(() => {
     let filtered = todos;
 
     if (
@@ -89,8 +88,7 @@ export const Todo: React.FC = () => {
         todo.title.toLowerCase().includes(searchValueLower)
       );
     }
-
-    setFilteredTodos(filtered);
+    return filtered;
   }, [todos, filters, inputsValue, favoriteTodos]);
 
   const checkLocalStorageFavoriteState = () => {
@@ -117,10 +115,6 @@ export const Todo: React.FC = () => {
     fetchAllTodos();
     checkLocalStorageFavoriteState();
   }, [userId, fetchAllTodos]);
-
-  useEffect(() => {
-    filterTodo();
-  }, [filterTodo]);
 
   return (
     <div className={styles['todo']}>

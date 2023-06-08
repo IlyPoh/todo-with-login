@@ -9,7 +9,7 @@ import styles from './TodoList.module.scss';
 
 interface TodoListProps {
   filteredTodos: ITodo[];
-  checkFavorite: (id: number) => ITodo[];
+  checkFavorite: (id: number) => boolean;
   handleFavourite: (id: number) => void;
 }
 
